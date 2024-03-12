@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="readContentViewModel"
+            type="kr.co.lion.androidproject4boardapp.viewmodel.ReadContentViewModel" />
+
+    </data>
+
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:transitionGroup="true"
+    tools:context=".fragment.ReadContentFragment" >
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbarReadContent"
+        style="@style/Theme.AndroidProject4BoardApp.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp" >
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="제목"
+                app:startIconDrawable="@drawable/subject_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldReadContentSubject"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={readContentViewModel.textFieldReadContentSubject}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="게시판 종류"
+                app:startIconDrawable="@drawable/warning_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldReadContentType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={readContentViewModel.textFieldReadContentType}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="닉네임"
+                app:startIconDrawable="@drawable/person_add_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldReadContentNickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={readContentViewModel.textFieldReadContentNickName}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="작성 날짜"
+                app:startIconDrawable="@drawable/calendar_month_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldReadContentDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="text"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={readContentViewModel.textFieldReadContentDate}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="글 내용"
+                app:startIconDrawable="@drawable/description_24px">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/textFieldReadContentText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:inputType="text|textMultiLine"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large"
+                    android:text="@={readContentViewModel.textFieldReadContentText}"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageView
+                android:id="@+id/imageViewReadContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                app:srcCompat="@drawable/panorama_24px" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+
+</layout>

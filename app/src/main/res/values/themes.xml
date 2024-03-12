@@ -1,0 +1,30 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.AndroidProject4BoardApp" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+        <!-- 모든 UI 요소의 기본 색상 -->
+        <item name="colorPrimary">@color/material_dynamic_primary40</item>
+        <!-- 상단 상태바 색상 -->
+        <item name="colorPrimaryDark">@color/material_dynamic_tertiary99</item>
+        <!-- 상단 상태바에 나타나는 정보를 보여주도록 설정한다. 상단 상태바의 색상이 밝은 색인지 여부를 설정한다 -->
+        <item name="android:windowLightStatusBar">true</item>
+
+    </style>
+
+    <style name="Theme.AndroidProject4BoardApp" parent="Base.Theme.AndroidProject4BoardApp" />
+
+    <!-- Splash Screen Theme -->
+    <style name="AppTheme.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/background_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_logo</item>
+        <item name="windowSplashScreenAnimationDuration">1000</item>
+        <item name="postSplashScreenTheme">@style/Theme.AndroidProject4BoardApp</item>
+    </style>
+
+    <!-- Toolbar 용 테마. Toolbar 마다 지정해준다. -->
+    <style name="Theme.AndroidProject4BoardApp.Toolbar" parent="ThemeOverlay.Material3.Toolbar.Surface">
+        <item name="colorPrimary">@color/material_dynamic_tertiary99</item>
+    </style>
+</resources>

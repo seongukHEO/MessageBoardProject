@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:title="게시판" >
+        <menu >
+            <item
+                android:id="@+id/menuItemContentNavigationAll"
+                android:checkable="true"
+                android:icon="@drawable/local_shipping_24px"
+                android:title="전체게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentNavigation1"
+                android:checkable="true"
+                android:icon="@drawable/post_add_24px"
+                android:title="자유게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentNavigation2"
+                android:checkable="true"
+                android:icon="@drawable/compost_24px"
+                android:title="유머게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentNavigation3"
+                android:checkable="true"
+                android:icon="@drawable/package_24px"
+                android:title="시사게시판"
+                app:showAsAction="ifRoom" />
+            <item
+                android:id="@+id/menuItemContentNavigation4"
+                android:checkable="true"
+                android:icon="@drawable/approval_24px"
+                android:title="스포치게시판"
+                app:showAsAction="ifRoom" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/menuItemContentNavigationModifyUserInfo"
+        android:checkable="true"
+        android:icon="@drawable/person_24px"
+        android:title="사용자 정보 수정"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuItemContentNavigationLogout"
+        android:checkable="true"
+        android:icon="@drawable/logout_24px"
+        android:title="로그아웃"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menuItemContentNavigationSignOut"
+        android:checkable="true"
+        android:icon="@drawable/move_item_24px"
+        android:title="회원탈퇴" />
+</menu>
