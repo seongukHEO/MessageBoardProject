@@ -44,6 +44,12 @@ class AddUserInfoViewModel : ViewModel(){
         }
     }
 
+    // 성별값을 반환하는 메서드
+    fun gettingGender():Gender = when(toggleAddUserInfoGender.value){
+        R.id.buttonAddUserInfoMale -> Gender.MALE
+        else -> Gender.FEMALE
+    }
+
     // 체크박스 전체 상태를 설정하는 메서드
     fun setCheckAll(checked:Boolean){
         checkBoxAddUserInfoHobby1.value = checked

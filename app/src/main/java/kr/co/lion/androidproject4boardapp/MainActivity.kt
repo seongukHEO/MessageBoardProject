@@ -4,10 +4,19 @@ import android.Manifest
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.transition.MaterialSharedAxis
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.tasks.await
 import kr.co.lion.androidproject4boardapp.databinding.ActivityMainBinding
 import kr.co.lion.androidproject4boardapp.fragment.AddUserInfoFragment
 import kr.co.lion.androidproject4boardapp.fragment.JoinFragment
@@ -27,6 +36,7 @@ class MainActivity : AppCompatActivity() {
         Manifest.permission.ACCESS_MEDIA_LOCATION
     )
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -36,12 +46,15 @@ class MainActivity : AppCompatActivity() {
 
         activityMainBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(activityMainBinding.root)
+        
 
         // 권한 확인
         requestPermissions(permissionList, 0)
+       // fsTest()
 
         // 첫 화면을 띄워준다.
         replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
+
     }
 
     // 지정한 Fragment를 보여주는 메서드
@@ -144,4 +157,56 @@ class MainActivity : AppCompatActivity() {
         // 지정한 이름으로 있는 Fragment를 BackStack에서 제거한다.
         supportFragmentManager.popBackStack(name.str, FragmentManager.POP_BACK_STACK_INCLUSIVE)
     }
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

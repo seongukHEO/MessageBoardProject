@@ -1,16 +1,22 @@
 package kr.co.lion.androidproject4boardapp.fragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.addTextChangedListener
 import androidx.databinding.DataBindingUtil
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.lion.androidproject4boardapp.MainActivity
 import kr.co.lion.androidproject4boardapp.MainFragmentName
 import kr.co.lion.androidproject4boardapp.R
 import kr.co.lion.androidproject4boardapp.Tools
+import kr.co.lion.androidproject4boardapp.dao.UserDao
 import kr.co.lion.androidproject4boardapp.databinding.FragmentJoinBinding
 import kr.co.lion.androidproject4boardapp.viewmodel.JoinViewModel
 
@@ -54,11 +60,11 @@ class JoinFragment : Fragment() {
 
     // 툴바 설정
     fun settingToolbar(){
-        
+
         // 타이틀에 설정해준다.
         joinViewModel.toolbarJoinTitle.value = "회원가입"
         joinViewModel.toolbarJoinNavigationIcon.value = R.drawable.arrow_back_24px
-        
+
         fragmentJoinBinding.apply {
             toolbarJoin.apply {
                 // 타이틀
@@ -84,10 +90,8 @@ class JoinFragment : Fragment() {
 
                     // 입력이 모두 잘 되어 있다면..
                     if(chk == true) {
-                        // 키보를 내려준다.
-                        Tools.hideSoftInput(mainActivity)
-                        // AddUserInfoFragment를 보여준다.
-                        mainActivity.replaceFragment(MainFragmentName.ADD_USER_INFO_FRAGMENT, true, true, null)
+//
+                        joinNext()
                     }
                 }
             }
@@ -161,13 +165,44 @@ class JoinFragment : Fragment() {
         fragmentJoinBinding.apply {
             buttonJoinCheckId.apply {
                 setOnClickListener {
-                    checkUserIdExist = true
+
+                    CoroutineScope(Dispatchers.Main).launch {
+                        checkUserIdExist = UserDao.checkUserIdExist(joinViewModel?.textFieldJoinUserId?.value!!)
+
+                    }
+
+                    if(checkUserIdExist == false) {
+                        //이걸 안하면 처음에 존재하는 아이디 라고 뜬다
+                        joinViewModel?.textFieldJoinUserId?.value = ""
+                        Tools.showErrorDialog(mainActivity, fragmentJoinBinding.textFieldJoinUserId,
+                            "아이디 입력 오류", "존재하는 아이디입니다\n다른 아이디를 입력해주세요")
+                    } else {
+                        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
+                        materialAlertDialogBuilder.setTitle("아이디 입력 오류")
+                        materialAlertDialogBuilder.setMessage("사용 가능한 아이디 입니다")
+                        materialAlertDialogBuilder.setPositiveButton("확인", null)
+                        materialAlertDialogBuilder.show()
+                    }
+
+                    // checkUserIdExist = true
                 }
             }
         }
     }
-}
 
+    // 다음 과정으로 이동한다
+    fun joinNext(){
+        // 사용자가 입력한 데이터를 담는다
+        val joinBundle = Bundle()
+        joinBundle.putString("joinUserId", joinViewModel.textFieldJoinUserId.value!!)
+        joinBundle.putString("joinUserPw", joinViewModel.textFieldJoinUserPw.value!!)
+
+        // 키보를 내려준다.
+        Tools.hideSoftInput(mainActivity)
+        // AddUserInfoFragment를 보여준다.
+        mainActivity.replaceFragment(MainFragmentName.ADD_USER_INFO_FRAGMENT, true, true, joinBundle)
+    }
+}
 
 
 
