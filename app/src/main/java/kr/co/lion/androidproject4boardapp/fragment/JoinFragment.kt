@@ -169,21 +169,20 @@ class JoinFragment : Fragment() {
                     CoroutineScope(Dispatchers.Main).launch {
                         checkUserIdExist = UserDao.checkUserIdExist(joinViewModel?.textFieldJoinUserId?.value!!)
 
-                    }
+                        if(checkUserIdExist == false) {
+                            //이걸 안하면 처음에 존재하는 아이디 라고 뜬다
+                            joinViewModel?.textFieldJoinUserId?.value = ""
+                            Tools.showErrorDialog(mainActivity, fragmentJoinBinding.textFieldJoinUserId,
+                                "아이디 입력 오류", "존재하는 아이디입니다\n다른 아이디를 입력해주세요")
+                        } else if (checkUserIdExist == true) {
+                            val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
+                            materialAlertDialogBuilder.setTitle("아이디 입력 오류")
+                            materialAlertDialogBuilder.setMessage("사용 가능한 아이디 입니다")
+                            materialAlertDialogBuilder.setPositiveButton("확인", null)
+                            materialAlertDialogBuilder.show()
+                        }
 
-                    if(checkUserIdExist == false) {
-                        //이걸 안하면 처음에 존재하는 아이디 라고 뜬다
-                        joinViewModel?.textFieldJoinUserId?.value = ""
-                        Tools.showErrorDialog(mainActivity, fragmentJoinBinding.textFieldJoinUserId,
-                            "아이디 입력 오류", "존재하는 아이디입니다\n다른 아이디를 입력해주세요")
-                    } else {
-                        val materialAlertDialogBuilder = MaterialAlertDialogBuilder(mainActivity)
-                        materialAlertDialogBuilder.setTitle("아이디 입력 오류")
-                        materialAlertDialogBuilder.setMessage("사용 가능한 아이디 입니다")
-                        materialAlertDialogBuilder.setPositiveButton("확인", null)
-                        materialAlertDialogBuilder.show()
                     }
-
                     // checkUserIdExist = true
                 }
             }
