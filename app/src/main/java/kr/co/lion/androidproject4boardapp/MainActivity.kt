@@ -1,6 +1,7 @@
 package kr.co.lion.androidproject4boardapp
 
 import android.Manifest
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
@@ -52,8 +53,29 @@ class MainActivity : AppCompatActivity() {
         requestPermissions(permissionList, 0)
        // fsTest()
 
-        // 첫 화면을 띄워준다.
-        replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
+        // 자동로그인시 저장된 사용자 정보를 가져온다.
+        val sharedPreferences = getSharedPreferences("AutoLogin", MODE_PRIVATE)
+        val loginUserIdx = sharedPreferences.getInt("loginUserIdx", -1)
+        val loginUserNickName = sharedPreferences.getString("loginUserNickName", null)
+
+        // 자동 로그인시 저장된 사용자 인덱스값이 없다면(자동로그인을 체크하지 않았다면)
+        if(loginUserIdx == -1) {
+            // 첫 화면을 띄워준다.
+            replaceFragment(MainFragmentName.LOGIN_FRAGMENT, false, false, null)
+        }
+        // 그렇지 않으면
+        else {
+            // ContentActivity를 실행한다.
+            val contentIntent = Intent(this, ContentActivity::class.java)
+
+            // 로그인한 사용자의 정보를 전달해준다.
+            contentIntent.putExtra("loginUserIdx", loginUserIdx)
+            contentIntent.putExtra("loginUserNickName", loginUserNickName)
+
+            startActivity(contentIntent)
+            // MainActivity를 종료한다.
+            finish()
+        }
 
     }
 

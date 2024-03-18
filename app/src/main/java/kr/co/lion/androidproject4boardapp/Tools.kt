@@ -5,16 +5,19 @@ import android.content.Context
 import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.os.SystemClock
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.io.File
+import java.io.FileOutputStream
 import java.net.URI
 import kotlin.concurrent.thread
 
@@ -150,6 +153,29 @@ class Tools {
 
         /////////////////////카메라 관련 //////////////////////////
 
+        //이미지뷰의 이미지를 추출해 로컬에 저장한다!!
+        fun saveImageViewData(context:Context, imageView:ImageView, fileName: String){
+            //외부 저장소까지의 경로를 가져온다
+            val filePath = context.getExternalFilesDir(null).toString()
+            //이미지 뷰에서 BitmapDrawerable 객체를 추출한다
+            //Bitmap으로 형변환을 해주어야 한다
+            val bitmapDrawerable = imageView.drawable as BitmapDrawable
+            //로컬에 저장할 경로
+            val file = File("${filePath}/${fileName}")
+            //스트림 추출
+            val fileOutputStream = FileOutputStream(file)
+            //이미지를 저장한다
+            // 이미지를 저장한다.
+            // 첫 번째 : 이미지 데이터 포멧(JPEG, PNG, WEBP_LOSSLESS, WEBP_LOSSY)
+            // 두 번째 : 이미지의 퀄리티
+            // 세 번째 : 이미지 데이터를 저장할 파일과 연결된 스트림
+
+
+            bitmapDrawerable.bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream)
+            fileOutputStream.flush()
+            fileOutputStream.close()
+        }
+
     }
 }
 
@@ -190,6 +216,12 @@ enum class ContentType(var str:String, var number:Int){
     TYPE_SPORTS("스포츠 게시판",4)
 }
 
+
+// 게시글 종류를 나타내는 값을 정의한다.
+enum class ContentState(var str:String, var number:Int){
+    CONTENT_STATE_NORMAL("정상", 1),
+    CONTENT_STATE_REMOVE("삭제", 2),
+}
 
 
 

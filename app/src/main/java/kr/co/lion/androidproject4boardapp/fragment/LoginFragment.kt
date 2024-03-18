@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.snackbar.Snackbar
+import io.grpc.Context
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -29,12 +30,17 @@ class LoginFragment : Fragment() {
 
     lateinit var loginViewModel: LoginViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         // Inflate the layout for this fragment
 
         //fragmentLoginBinding = FragmentLoginBinding.inflate(inflater)
 
-        fragmentLoginBinding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_login, container, false)
+        fragmentLoginBinding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.fragment_login, container, false)
         loginViewModel = LoginViewModel()
         fragmentLoginBinding.loginViewModel = loginViewModel
         fragmentLoginBinding.lifecycleOwner = this
@@ -50,9 +56,9 @@ class LoginFragment : Fragment() {
     }
 
     // 툴바 설정
-    fun settingToolbar(){
+    fun settingToolbar() {
         fragmentLoginBinding.apply {
-            toolbarLogin.apply { 
+            toolbarLogin.apply {
                 // 타이틀
                 title = "로그인"
             }
@@ -60,7 +66,7 @@ class LoginFragment : Fragment() {
     }
 
     // 회원 가입 버튼
-    fun settingButtonLoginJoin(){
+    fun settingButtonLoginJoin() {
         fragmentLoginBinding.apply {
             buttonLoginJoin.apply {
                 // 버튼을 눌렀을 때
@@ -73,7 +79,7 @@ class LoginFragment : Fragment() {
     }
 
     // 로그인 버튼
-    fun settingButtonLoginSubmit(){
+    fun settingButtonLoginSubmit() {
         fragmentLoginBinding.apply {
             buttonLoginSubmit.apply {
                 // 버튼을 눌렀을 때
@@ -94,22 +100,33 @@ class LoginFragment : Fragment() {
 
     //화면 세팅
     //mutableLiveData를 초기화 한다!
-    fun settingUserInfo(){
+    fun settingUserInfo() {
         loginViewModel.textFieldLoginUserId.value = ""
         loginViewModel.textFieldLoginUserPw.value = ""
         loginViewModel.checkBoxLoginAuto.value = true
     }
+
     //유효성 검사
-    fun checkInputForm():Boolean{
+    fun checkInputForm(): Boolean {
         val userId = loginViewModel.textFieldLoginUserId.value!!
         val userPw = loginViewModel.textFieldLoginUserPw.value!!
 
-        if (userId.isEmpty()){
-            Tools.showErrorDialog(mainActivity, fragmentLoginBinding.textFieldLoginUserId, "아이디 입력 오류", "아이디를 입력해주세요")
+        if (userId.isEmpty()) {
+            Tools.showErrorDialog(
+                mainActivity,
+                fragmentLoginBinding.textFieldLoginUserId,
+                "아이디 입력 오류",
+                "아이디를 입력해주세요"
+            )
             return false
         }
-        if (userPw.isEmpty()){
-            Tools.showErrorDialog(mainActivity,fragmentLoginBinding.textFieldLoginUserPw, "비밀번호 입력오류", "비밀번호를 입력해주세요")
+        if (userPw.isEmpty()) {
+            Tools.showErrorDialog(
+                mainActivity,
+                fragmentLoginBinding.textFieldLoginUserPw,
+                "비밀번호 입력오류",
+                "비밀번호를 입력해주세요"
+            )
             return false
         }
         return true
@@ -117,7 +134,7 @@ class LoginFragment : Fragment() {
 
     //로그인 처리
     // 로그인 처리
-    fun loginPro(){
+    fun loginPro() {
         // 사용자가 입력한 정보를 가져온다.
         val userId = loginViewModel.textFieldLoginUserId.value!!
         val userPw = loginViewModel.textFieldLoginUserPw.value!!
@@ -128,24 +145,43 @@ class LoginFragment : Fragment() {
 
             // 만약 null 이라면..
             //그니까 id가 null이라면
-            if(loginUserModel == null){
-                Tools.showErrorDialog(mainActivity, fragmentLoginBinding.textFieldLoginUserId, "로그인 오류",
-                    "존재하지 않는 아이디 입니다")
+            if (loginUserModel == null) {
+                Tools.showErrorDialog(
+                    mainActivity, fragmentLoginBinding.textFieldLoginUserId, "로그인 오류",
+                    "존재하지 않는 아이디 입니다"
+                )
             }
             // 만약 정보를 가져온 것이 있다면
             //아이디가 있다면
             else {
                 //아이디는 있는데 비번이 다를 경우
                 // 입력한 비밀번호와 서버에서 받아온 사용자의 비밀번호가 다르다면..
-                if(userPw != loginUserModel.userPw){
-                    Tools.showErrorDialog(mainActivity, fragmentLoginBinding.textFieldLoginUserPw, "로그인 오류",
-                        "비밀번호가 잘못되었습니다")
+                if (userPw != loginUserModel.userPw) {
+                    Tools.showErrorDialog(
+                        mainActivity, fragmentLoginBinding.textFieldLoginUserPw, "로그인 오류",
+                        "비밀번호가 잘못되었습니다"
+                    )
                 }
                 // 비밀번호가 일치한다면
                 else {
+                    // 자동 로그인이 체크되어 있다면...
+                    if(loginViewModel.checkBoxLoginAuto.value == true){
+                        // Preferences 에 사용자 정보를 저장해둔다.
+                        val sharedPreferences = mainActivity.getSharedPreferences("AutoLogin", android.content.Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putInt("loginUserIdx", loginUserModel.userIdx)
+                        editor.putString("loginUserNickName", loginUserModel.userNickName)
+                        editor.apply()
+                    }
 
                     // ContentActivity를 실행한다.
                     val contentIntent = Intent(mainActivity, ContentActivity::class.java)
+
+                    //로그인한 사용자의 정보를 전달해준다
+                    //자동 로그인과는 관련 없음
+                    contentIntent.putExtra("loginUseridx", loginUserModel.userId)
+                    contentIntent.putExtra("loginUserNickName", loginUserModel.userNickName)
+
                     startActivity(contentIntent)
                     // MainActivity를 종료한다.
                     mainActivity.finish()

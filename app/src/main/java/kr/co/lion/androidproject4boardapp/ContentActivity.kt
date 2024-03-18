@@ -22,11 +22,19 @@ class ContentActivity : AppCompatActivity() {
     var oldFragment:Fragment? = null
     var newFragment:Fragment? = null
 
+    // 로그인한 사용자의 정보를 담을 변수
+    var loginUserIdx = 0
+    var loginUserNickName = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         activityContentBinding = ActivityContentBinding.inflate(layoutInflater)
         setContentView(activityContentBinding.root)
+
+        //로그인한 사용자의 정보를 담아둔다 --> 아까 LoginFragment에서 intent로 보냄
+        loginUserIdx = intent.getIntExtra("loginUserIdx", 0)
+        loginUserNickName = intent.getStringExtra("loginUserNickName")!!
 
         settingNavigationView()
 
